@@ -1,44 +1,126 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Бургерная "Вкусный Уголок"</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telegram Mini App Quiz</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f1f1f1;
+        padding: 20px;
+      }
+      .quiz-box {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+      .question {
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+      .option {
+        display: block;
+        margin-bottom: 10px;
+        padding: 10px;
+        background: #e3e3e3;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .option:hover {
+        background: #d0d0d0;
+      }
+      .submit {
+        margin-top: 20px;
+        background: #0088cc;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="quiz-box" v-if="currentQuestion">
+        <div class="question">{{ currentQuestion.text }}</div>
+        <div
+          v-for="(answer, index) in currentQuestion.answers"
+          :key="index"
+          class="option"
+          @click="selectOption(index)"
+          :style="{ background: selected === index ? '#cce5ff' : '' }"
+        >
+          {{ answer }}
+        </div>
+        <button class="submit" @click="nextQuestion">{{ isLast ? 'Завершить' : 'Далее' }}</button>
+      </div>
+      <div v-else>
+        <h2>Спасибо за прохождение!</h2>
+        <p>Результаты могут быть отправлены обратно в Telegram.</p>
+      </div>
+    </div>
 
-<header>
-    <h1>Бургерная "Вкусный Уголок"</h1>
-</header>
+    <script>
+      const { createApp } = Vue
 
-<nav>
-    <a href="#menu">Меню</a>
-    <a href="#about">О нас</a>
-    <a href="#contact">Контакты</a>
-</nav>
-
-<section id="menu">
-    <h2>Наше Меню</h2>
-    <p>Классический бургер - 200 ₽</p>
-    <p>Чизбургер - 250 ₽</p>
-    <p>Двойной бургер - 300 ₽</p>
-</section>
-
-<section id="about">
-    <h2>О нас</h2>
-    <p>Мы - небольшая бургерная с уютной атмосферой, где подаются только свежие и вкусные бургеры.</p>
-</section>
-
-<section id="contact">
-    <h2>Контакты</h2>
-    <p>Адрес: ул. Вкусная, 12, г. Бургерград</p>
-    <p>Телефон: +7 (123) 456-78-90</p>
-</section>
-
-<footer>
-    <p>Бургерная "Вкусный Уголок" &copy; 2024</p>
-</footer>
-
-</body>
+      createApp({
+        data() {
+          return {
+            questions: [
+              {
+                text: 'Как ты себя чувствуешь?',
+                answers: ['Хорошо', 'Нормально', 'Плохо', 'Очень плохо']
+              },
+              {
+                text: 'Насколько ты энергичен?',
+                answers: ['Очень', 'Средне', 'Слабо', 'Вообще нет сил']
+              }
+            ],
+            currentIndex: 0,
+            selected: null,
+            results: []
+          }
+        },
+        computed: {
+          currentQuestion() {
+            return this.questions[this.currentIndex]
+          },
+          isLast() {
+            return this.currentIndex === this.questions.length - 1
+          }
+        },
+        methods: {
+          selectOption(index) {
+            this.selected = index
+          },
+          nextQuestion() {
+            if (this.selected === null) return alert('Выберите вариант!')
+            this.results.push({
+              question: this.currentQuestion.text,
+              answer: this.currentQuestion.answers[this.selected]
+            })
+            this.selected = null
+            if (this.isLast) {
+              Telegram.WebApp.sendData(JSON.stringify(this.results))
+              this.currentIndex++
+            } else {
+              this.currentIndex++
+            }
+          }
+        },
+        mounted() {
+          Telegram.WebApp.ready()
+        }
+      }).mount('#app')
+    </script>
+  </body>
 </html>
+
