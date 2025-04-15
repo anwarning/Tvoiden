@@ -1,20 +1,20 @@
 <!-- index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Telegram Mini App Quiz</title>
+    <title>Тест шкала Бека</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
       body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background-color: #f1f1f1;
+        background-color: #f4f4f4;
         padding: 20px;
       }
-      .quiz-box {
+      .box {
         background: #fff;
         padding: 20px;
         border-radius: 12px;
@@ -36,35 +36,63 @@
       .option:hover {
         background: #d0d0d0;
       }
-      .submit {
+      .option.selected {
+        background: #cce5ff;
+      }
+      .nav-buttons {
         margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .button {
         background: #0088cc;
         color: white;
         padding: 10px 15px;
         border: none;
         border-radius: 8px;
         cursor: pointer;
+        flex: 1;
+        margin: 0 5px;
+      }
+      .progress {
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: #555;
       }
     </style>
   </head>
   <body>
     <div id="app">
-      <div class="quiz-box" v-if="currentQuestion">
-        <div class="question">{{ currentQuestion.text }}</div>
-        <div
-          v-for="(answer, index) in currentQuestion.answers"
-          :key="index"
-          class="option"
-          @click="selectOption(index)"
-          :style="{ background: selected === index ? '#cce5ff' : '' }"
-        >
-          {{ answer }}
-        </div>
-        <button class="submit" @click="nextQuestion">{{ isLast ? 'Завершить' : 'Далее' }}</button>
+      <div class="box" v-if="stage === 'intro'">
+        <h2>Элина Каёхтина</h2>
+        <p>🧠 Когнитивно-поведенческая терапия (КПТ) — основа моей работы в психологическом консультировании</p>
+        <p>🧩 С чем ко мне можно обратиться?</p>
+        <ul>
+          <li>Межличностные отношения</li>
+          <li>Жизненные кризисы</li>
+          <li>Самореализация</li>
+          <li>Семья и детство</li>
+          <li>Тревожные расстройства</li>
+        </ul>
+        <button class="button" @click="stage = 'quiz'">Пройти тест шкалы Бека</button>
       </div>
-      <div v-else>
+
+      <div class="box" v-else-if="stage === 'quiz'">
+        <div class="progress">Вопрос {{ currentIndex + 1 }} из {{ questions.length }}</div>
+        <div class="question">{{ currentQuestion.text }}</div>
+        <div v-for="(opt, i) in currentQuestion.options" :key="i" class="option" :class="{ selected: selected === i }" @click="selected = i">
+          {{ opt.text }}
+        </div>
+        <div class="nav-buttons">
+          <button class="button" @click="prevQuestion" :disabled="currentIndex === 0">Назад</button>
+          <button class="button" @click="nextQuestion">{{ isLast ? 'Завершить' : 'Далее' }}</button>
+        </div>
+      </div>
+
+      <div class="box" v-else>
         <h2>Спасибо за прохождение!</h2>
-        <p>Результаты могут быть отправлены обратно в Telegram.</p>
+        <p>Ваш результат: {{ score }} баллов</p>
+        <p>{{ interpretation }}</p>
       </div>
     </div>
 
@@ -74,45 +102,61 @@
       createApp({
         data() {
           return {
-            questions: [
-              {
-                text: 'Как ты себя чувствуешь?',
-                answers: ['Хорошо', 'Нормально', 'Плохо', 'Очень плохо']
-              },
-              {
-                text: 'Насколько ты энергичен?',
-                answers: ['Очень', 'Средне', 'Слабо', 'Вообще нет сил']
-              }
-            ],
+            stage: 'intro',
             currentIndex: 0,
             selected: null,
-            results: []
+            answers: [],
+            questions: Array.from({ length: 21 }, (_, i) => ({
+              text: `Вопрос №${i + 1}`,
+              options: [
+                { text: '0 баллов', value: 0 },
+                { text: '1 балл', value: 1 },
+                { text: '2 балла', value: 2 },
+                { text: '3 балла', value: 3 },
+              ]
+            }))
           }
         },
         computed: {
           currentQuestion() {
-            return this.questions[this.currentIndex]
+            return this.questions[this.currentIndex] || null
           },
           isLast() {
             return this.currentIndex === this.questions.length - 1
+          },
+          score() {
+            return this.answers.reduce((sum, i) => sum + i, 0)
+          },
+          interpretation() {
+            const s = this.score
+            if (s <= 10) return 'Норма'
+            if (s <= 18) return 'Лёгкая депрессия'
+            if (s <= 29) return 'Умеренная депрессия'
+            return 'Тяжёлая депрессия'
           }
         },
         methods: {
-          selectOption(index) {
-            this.selected = index
-          },
           nextQuestion() {
-            if (this.selected === null) return alert('Выберите вариант!')
-            this.results.push({
-              question: this.currentQuestion.text,
-              answer: this.currentQuestion.answers[this.selected]
-            })
+            if (this.selected === null) return alert('Выберите ответ')
+            this.answers[this.currentIndex] = this.currentQuestion.options[this.selected].value
             this.selected = null
             if (this.isLast) {
-              Telegram.WebApp.sendData(JSON.stringify(this.results))
-              this.currentIndex++
+              const data = {
+                score: this.score,
+                interpretation: this.interpretation,
+                answers: this.answers
+              }
+              Telegram.WebApp.sendData(JSON.stringify(data))
+              this.stage = 'done'
             } else {
               this.currentIndex++
+              this.selected = this.answers[this.currentIndex] ?? null
+            }
+          },
+          prevQuestion() {
+            if (this.currentIndex > 0) {
+              this.currentIndex--
+              this.selected = this.answers[this.currentIndex] ?? null
             }
           }
         },
@@ -123,4 +167,3 @@
     </script>
   </body>
 </html>
-
