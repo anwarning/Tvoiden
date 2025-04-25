@@ -1,169 +1,115 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Тест шкала Бека</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        padding: 20px;
-      }
-      .box {
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      }
-      .question {
-        font-size: 18px;
-        margin-bottom: 15px;
-      }
-      .option {
-        display: block;
-        margin-bottom: 10px;
-        padding: 10px;
-        background: #e3e3e3;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background 0.2s;
-      }
-      .option:hover {
-        background: #d0d0d0;
-      }
-      .option.selected {
-        background: #cce5ff;
-      }
-      .nav-buttons {
-        margin-top: 20px;
-        display: flex;
-        justify-content: space-between;
-      }
-      .button {
-        background: #0088cc;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        flex: 1;
-        margin: 0 5px;
-      }
-      .progress {
-        margin-bottom: 15px;
-        font-size: 14px;
-        color: #555;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="app">
-      <div class="box" v-if="stage === 'intro'">
-        <h2>Элина Каёхтина</h2>
-        <p>🧠 Когнитивно-поведенческая терапия (КПТ) — основа моей работы в психологическом консультировании</p>
-        <p>🧩 С чем ко мне можно обратиться?</p>
-        <ul>
-          <li>Межличностные отношения</li>
-          <li>Жизненные кризисы</li>
-          <li>Самореализация</li>
-          <li>Семья и детство</li>
-          <li>Тревожные расстройства</li>
-        </ul>
-        <button class="button" @click="stage = 'quiz'">Пройти тест шкалы Бека</button>
-      </div>
+<html lang="en">
 
-      <div class="box" v-else-if="stage === 'quiz'">
-        <div class="progress">Вопрос {{ currentIndex + 1 }} из {{ questions.length }}</div>
-        <div class="question">{{ currentQuestion.text }}</div>
-        <div v-for="(opt, i) in currentQuestion.options" :key="i" class="option" :class="{ selected: selected === i }" @click="selected = i">
-          {{ opt.text }}
-        </div>
-        <div class="nav-buttons">
-          <button class="button" @click="prevQuestion" :disabled="currentIndex === 0">Назад</button>
-          <button class="button" @click="nextQuestion">{{ isLast ? 'Завершить' : 'Далее' }}</button>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>HTML+CSS</title>
+    <link rel="stylesheet" href="main.css">
+
+</head>
+
+<body>
+    <div class="header-wrapper">
+        <div class="header-content" style="max-width: 500px;">
+          <!-- Плашки с текстом слева -->
+          <div class="labels-container">
+            <div class="label label-bottom"></div>
+            <div class="label label-top">
+              <h1>ЭЛИНА КАЁХТИНА</h1>
+              <p>Помогаю найти опору в себе</p>
+            </div>
+          </div>
+          
+          <!-- Кнопка домой справа -->
+          <button class="home-button">
+            <img width="32" height="32" class="icons" src="https://img.icons8.com/external-anggara-glyph-anggara-putra/32/external-home-user-interface-anggara-glyph-anggara-putra.png" alt="external-home-user-interface-anggara-glyph-anggara-putra"/>
+            <span>мой<br>кабинет</span>
+          </button>
         </div>
       </div>
+          
 
-      <div class="box" v-else>
-        <h2>Спасибо за прохождение!</h2>
-        <p>Ваш результат: {{ score }} баллов</p>
-        <p>{{ interpretation }}</p>
-      </div>
+        <div id="description">
+
+            <div class="left-part">
+                <img src="Elina_main.jpg" alt="Фото психолога" class="circle-img">
+                <button class="about-button">О психологе</button>
+            </div>
+
+            <div class="right-part">
+                <div class="info-card">
+                    <div class="info-content">
+                        <p>Сертифицированный КПТ-психолог с опытом работы 5+ лет</p>
+                    </div>
+                </div>
+                <a class="info-button" href="https://docs.google.com/spreadsheets/d/1-wagKB7BriW69GfPwqjCrZwlU1cHpnk8yELC6elyZpk/edit?gid=0#gid=0" target="_blank">Записаться на сессию</a>
+            </div>
+        </div>
+        <div class="content-section">
+            <div id="tests_courses">
+                <div class="section-card" id="tests">
+                    <div class="section-content">
+                        <span class="section-icon">📝</span>
+                        <div class="section-text">
+                            <h3>Тесты</h3>
+                            <p>Пройдите психологические тесты</p>
+                        </div>
+                    </div>
+                    <span class="arrow-icon">→</span>
+                </div>
+                
+                <div class="section-card" id="courses">
+                    <div class="section-content">
+                        <span class="section-icon">🎓</span>
+                        <div class="section-text">
+                            <h3>Курсы</h3>
+                            <p>Обучающие программы и тренинги</p>
+                        </div>
+                    </div>
+                    <span class="arrow-icon">→</span>
+                </div>
+            </div>
     </div>
+    
+    <div class="courses-section">
+        <div class="courses-title">Популярные курсы</div>
+        
+        <div class="course-card">
+            <div class="course-icon">🎯</div>
+            <div class="course-info">
+                <div class="course-name">Найти себя</div>
+                <div class="course-desc">3 простых шага, что бы понять, чего ты хочешь от жизни</div>
+            </div>
+            <div class="course-meta">
+                <div class="participants">участников: 13</div>
+                <div class="price">5 000 ₸</div>
+                <button class="start-button">Начать</button>
+            </div>
+        </div>
+        
+        <div class="course-card">
+            <div class="course-icon">🧠</div>
+            <div class="course-info">
+                <div class="course-name">Эмоциональный интеллект</div>
+                <div class="course-desc">Развивай навык распознавания эмоций</div>
+            </div>
+            <div class="course-meta">
+                <div class="participants">участников: 21</div>
+                <div class="price">50 ⭐</div>
+                <button class="start-button">Начать</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script>
-      const { createApp } = Vue
+<div id="footer">разработано: neuracloud</div>
 
-      createApp({
-        data() {
-          return {
-            stage: 'intro',
-            currentIndex: 0,
-            selected: null,
-            answers: [],
-            questions: Array.from({ length: 21 }, (_, i) => ({
-              text: `Вопрос №${i + 1}`,
-              options: [
-                { text: '0 баллов', value: 0 },
-                { text: '1 балл', value: 1 },
-                { text: '2 балла', value: 2 },
-                { text: '3 балла', value: 3 },
-              ]
-            }))
-          }
-        },
-        computed: {
-          currentQuestion() {
-            return this.questions[this.currentIndex] || null
-          },
-          isLast() {
-            return this.currentIndex === this.questions.length - 1
-          },
-          score() {
-            return this.answers.reduce((sum, i) => sum + i, 0)
-          },
-          interpretation() {
-            const s = this.score
-            if (s <= 10) return 'Норма'
-            if (s <= 18) return 'Лёгкая депрессия'
-            if (s <= 29) return 'Умеренная депрессия'
-            return 'Тяжёлая депрессия'
-          }
-        },
-        methods: {
-          nextQuestion() {
-            if (this.selected === null) return alert('Выберите ответ')
-            this.answers[this.currentIndex] = this.currentQuestion.options[this.selected].value
-            this.selected = null
-            if (this.isLast) {
-              const data = {
-                score: this.score,
-                interpretation: this.interpretation,
-                answers: this.answers
-              }
-              Telegram.WebApp.sendData(JSON.stringify(data))
-              this.stage = 'done'
-            } else {
-              this.currentIndex++
-              this.selected = this.answers[this.currentIndex] ?? null
-            }
-          },
-          prevQuestion() {
-            if (this.currentIndex > 0) {
-              this.currentIndex--
-              this.selected = this.answers[this.currentIndex] ?? null
-            }
-          }
-        },
-        mounted() {
-          Telegram.WebApp.ready()
-        }
-      }).mount('#app')
-    </script>
-  </body>
+
+
+
+
+
+</body>
+
 </html>
