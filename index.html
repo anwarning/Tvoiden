@@ -1,115 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ru">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <title>HTML+CSS</title>
-    <link rel="stylesheet" href="main.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Mini App</title>
+  <link rel="stylesheet" href="main.css">
 </head>
-
 <body>
+  <div class="wrapper">
     <div class="header-wrapper">
-        <div class="header-content" style="max-width: 500px;">
-          <!-- Плашки с текстом слева -->
-          <div class="labels-container">
-            <div class="label label-bottom"></div>
-            <div class="label label-top">
-              <h1>ЭЛИНА КАЁХТИНА</h1>
-              <p>Помогаю найти опору в себе</p>
-            </div>
+      <div class="header-content" style="max-width: 500px;">
+        <!-- Плашки с текстом слева -->
+        <div class="labels-container">
+          <div class="label label-bottom"></div>
+          <div class="label label-top">
+            <h1>ЭЛИНА КАЁХТИНА</h1>
+            <p>Помогаю найти опору в себе</p>
           </div>
-          
-          <!-- Кнопка домой справа -->
-          <button class="home-button">
-            <img width="32" height="32" class="icons" src="https://img.icons8.com/external-anggara-glyph-anggara-putra/32/external-home-user-interface-anggara-glyph-anggara-putra.png" alt="external-home-user-interface-anggara-glyph-anggara-putra"/>
-            <span>мой<br>кабинет</span>
-          </button>
+        </div>
+        
+        <!-- Кнопка домой справа -->
+        <button class="home-button">
+          <img width="32" height="32" class="icons" src="https://img.icons8.com/external-anggara-glyph-anggara-putra/32/external-home-user-interface-anggara-glyph-anggara-putra.png" alt="external-home-user-interface-anggara-glyph-anggara-putra"/>
+          <span>мой<br>кабинет</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="description">
+
+      <div class="left-part">
+          <img src="Elina_main.jpg" alt="Фото психолога" class="circle-img">
+          <button class="about-button">О психологе</button>
+      </div>
+
+      <div class="right-part">
+          <div class="info-card">
+            <p>Сертифицированный КПТ-психолог с опытом работы 5+ лет</p>
+              
+          </div>
+          <a class="info-button" href="https://docs.google.com/spreadsheets/d/1-wagKB7BriW69GfPwqjCrZwlU1cHpnk8yELC6elyZpk/edit?gid=0#gid=0" target="_blank">Записаться на сессию</a>
+      </div>
+  </div>
+
+    <div class="cards-wrapper">
+      <div class="card">
+        <div class="card-content">
+          <span>📝</span>
+          <div>
+            <h3>Тесты</h3>
+            <p>Пройдите психологические тесты</p>
+          </div>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="card">
+        <div class="card-content">
+          <span>🎓</span>
+          <div>
+            <h3>Курсы</h3>
+            <p>Обучающие программы и тренинги</p>
+          </div>
+        </div>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+
+    <div class="courses-card">
+      <div class="course">
+        <div class="icon">🎯</div>
+        <div class="text">
+          <div class="name">Найти себя</div>
+          <div class="desc">3 простых шага, чтобы понять, чего ты хочешь от жизни</div>
+        </div>
+        <div class="meta">
+          <div class="participants">участников: 13</div>
+          <div class="price">5 000₸</div>
+          <button>Начать</button>
         </div>
       </div>
-          
-
-        <div id="description">
-
-            <div class="left-part">
-                <img src="Elina_main.jpg" alt="Фото психолога" class="circle-img">
-                <button class="about-button">О психологе</button>
-            </div>
-
-            <div class="right-part">
-                <div class="info-card">
-                    <div class="info-content">
-                        <p>Сертифицированный КПТ-психолог с опытом работы 5+ лет</p>
-                    </div>
-                </div>
-                <a class="info-button" href="https://docs.google.com/spreadsheets/d/1-wagKB7BriW69GfPwqjCrZwlU1cHpnk8yELC6elyZpk/edit?gid=0#gid=0" target="_blank">Записаться на сессию</a>
-            </div>
+      <div class="divider"></div>
+      <div class="course">
+        <div class="icon">🧠</div>
+        <div class="text">
+          <div class="name">Эмоциональный интеллект</div>
+          <div class="desc">Развивай навык распознавания эмоций</div>
         </div>
-        <div class="content-section">
-            <div id="tests_courses">
-                <div class="section-card" id="tests">
-                    <div class="section-content">
-                        <span class="section-icon">📝</span>
-                        <div class="section-text">
-                            <h3>Тесты</h3>
-                            <p>Пройдите психологические тесты</p>
-                        </div>
-                    </div>
-                    <span class="arrow-icon">→</span>
-                </div>
-                
-                <div class="section-card" id="courses">
-                    <div class="section-content">
-                        <span class="section-icon">🎓</span>
-                        <div class="section-text">
-                            <h3>Курсы</h3>
-                            <p>Обучающие программы и тренинги</p>
-                        </div>
-                    </div>
-                    <span class="arrow-icon">→</span>
-                </div>
-            </div>
+        <div class="meta">
+          <div class="participants">участников: 21</div>
+          <div class="price">50 ⭐</div>
+          <button>Начать</button>
+        </div>
+      </div>
     </div>
-    
-    <div class="courses-section">
-        <div class="courses-title">Популярные курсы</div>
-        
-        <div class="course-card">
-            <div class="course-icon">🎯</div>
-            <div class="course-info">
-                <div class="course-name">Найти себя</div>
-                <div class="course-desc">3 простых шага, что бы понять, чего ты хочешь от жизни</div>
-            </div>
-            <div class="course-meta">
-                <div class="participants">участников: 13</div>
-                <div class="price">5 000 ₸</div>
-                <button class="start-button">Начать</button>
-            </div>
-        </div>
-        
-        <div class="course-card">
-            <div class="course-icon">🧠</div>
-            <div class="course-info">
-                <div class="course-name">Эмоциональный интеллект</div>
-                <div class="course-desc">Развивай навык распознавания эмоций</div>
-            </div>
-            <div class="course-meta">
-                <div class="participants">участников: 21</div>
-                <div class="price">50 ⭐</div>
-                <button class="start-button">Начать</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div id="footer">разработано: neuracloud</div>
-
-
-
-
-
-
+    <footer>разработано: neuracloud</footer>
+  </div>
 </body>
-
 </html>
